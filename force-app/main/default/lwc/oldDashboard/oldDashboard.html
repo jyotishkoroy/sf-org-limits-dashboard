@@ -1,0 +1,108 @@
+<template>
+  <section class="shell">
+    <header class="hero">
+      <div class="heroLeft">
+        <div class="title">Org Limits Dashboard</div>
+        <div class="subtitle">Thresholds · search/sort · refresh · CSV export</div>
+      </div>
+
+      <div class="heroRight">
+        <span class={envPillClass}>{envLabel}</span>
+        <span class="pill pillMuted">v{info.version}</span>
+        <lightning-button variant="neutral" label="Refresh" onclick={refresh} disabled={busy}></lightning-button>
+        <lightning-button variant="brand" label="Export CSV" onclick={exportCsv} disabled={exportDisabled}></lightning-button>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="topRow">
+        <article class="card">
+          <div class="cardHeader">
+            <div class="cardTitle">Filters</div>
+            <div class="pills">
+              <span class="pill pillMuted">last refresh {lastRefreshLabel}</span>
+              <span class="pill">{filteredCount} shown</span>
+            </div>
+          </div>
+          <div class="cardBody">
+            <div class="controls">
+              <lightning-input type="search" label="Search limits" value={searchText} onchange={onSearch} placeholder="e.g. Daily API, Concurrent, Emails..."></lightning-input>
+
+              <lightning-input type="number" label="Warn threshold (%)" value={warnPct} onchange={onWarn} min="1" max="99"></lightning-input>
+
+              <lightning-input type="number" label="High threshold (%)" value={highPct} onchange={onHigh} min="1" max="99"></lightning-input>
+
+              <div class="hint">
+                Thresholds are saved locally in your browser.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="cardHeader">
+            <div class="cardTitle">Summary</div>
+            <div class="pills">
+              <span class="pill pillOk">{okCount} OK</span>
+              <span class="pill pillWarn">{warnCount} WARN</span>
+              <span class="pill pillHigh">{highCount} HIGH</span>
+            </div>
+          </div>
+          <div class="cardBody">
+            <div class="summaryGrid">
+              <div class="sumTile">
+                <div class="sumKey">Total limits</div>
+                <div class="sumVal">{totalCount}</div>
+              </div>
+              <div class="sumTile">
+                <div class="sumKey">Highest usage</div>
+                <div class="sumVal">{topPct}%</div>
+              </div>
+              <div class="sumTile">
+                <div class="sumKey">Top limit</div>
+                <div class="sumVal mono wrap">{topName}</div>
+              </div>
+            </div>
+
+            <div class="note">
+              This dashboard reads limits from the platform REST API and does not store org data.
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <article class="card cardFull">
+        <div class="cardHeader">
+          <div class="cardTitle">Org limits</div>
+          <div class="pills">
+            <span class="pill pillMuted">sort any column</span>
+          </div>
+        </div>
+        <div class="cardBody">
+          <template if:true={error}>
+            <div class="note noteBad">{error}</div>
+          </template>
+
+          <template if:true={busy}>
+            <div class="loading">
+              <div class="spinner"></div>
+              <div class="loadingText">{busyLabel}</div>
+            </div>
+          </template>
+
+          <template if:false={busy}>
+            <lightning-datatable
+              key-field="key"
+              data={displayRows}
+              columns={columns}
+              hide-checkbox-column
+              sorted-by={sortedBy}
+              sorted-direction={sortedDirection}
+              onsort={handleSort}
+            ></lightning-datatable>
+          </template>
+        </div>
+      </article>
+    </div>
+  </section>
+</template>

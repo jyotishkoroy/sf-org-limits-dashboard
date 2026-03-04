@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Admin dashboard for org limits: thresholds, search/sort, refresh, CSV export.</description>
+    <formFactors>Large</formFactors>
+    <label>Org Limits Dashboard</label>
+    <navType>Standard</navType>
+    <tabs>Org_Limits_Dashboard</tabs>
+    <uiType>Lightning</uiType>
+</CustomApplication>

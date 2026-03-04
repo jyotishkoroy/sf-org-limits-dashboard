@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Org Limits Dashboard</label>
+
+    <classAccesses><apexClass>OLD_AppController</apexClass><enabled>true</enabled></classAccesses>
+
+    <tabSettings>
+        <tab>Org_Limits_Dashboard</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+
+    <userPermissions><name>ApiEnabled</name><enabled>true</enabled></userPermissions>
+</PermissionSet>
